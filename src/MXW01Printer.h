@@ -168,15 +168,13 @@ class MXW01Printer : public Adafruit_GFX {
   bool useEjectCommand = true;
   bool feedBlankRows(uint16_t rows);
 
-  // The printer ejects its own trailer after a job, so no extra feed by
-  // default. Raise only if the tear bar cuts into your content.
-  uint16_t autoFeedRows = 0;
-
   // Print mode sent in the A9 request.
   //   0x00 - the reference mode, but the printer then ejects a long
   //          blank trailer after every job.
   //   0x01 - same monochrome output, far less post-print eject.
-  // Default 0x01 because the trailer wastes a lot of paper.
+  // Default 0x01 because the trailer wastes a lot of paper. The printer
+  // handles paper advance itself after a job, so printBuffer() sends no
+  // extra feed; call eject()/feed() yourself only if you want more.
   uint8_t printMode = MXW01_MODE_1BPP_ALT;
 
   // --- Printer info and control ---
